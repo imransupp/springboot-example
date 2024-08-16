@@ -3,8 +3,17 @@ name: Deploy App to Azure App Services
 on:
   push:
     branches:
-      - master
-
+      - main
+      - dev
+      - feature/**
+      - bug/**
+      - release/**
+  pull_request:
+    branches:
+      - main
+      - feature/**
+      - bug/**
+      - release/**
 jobs:
   build:
     runs-on: ubuntu-latest
