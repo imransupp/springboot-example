@@ -3,14 +3,14 @@ name: Deploy App to Azure App Services
 on:
   push:
     branches:
-      - main
+      - master
       - dev
       - feature/**
       - bug/**
       - release/**
   pull_request:
     branches:
-      - main
+      - master
       - feature/**
       - bug/**
       - release/**
