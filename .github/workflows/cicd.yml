@@ -54,7 +54,7 @@ jobs: #collection of jobs
   deploy:
     runs-on: ubuntu-latest
     needs: build #this job won't be executed until the set-environment job is finished
-    environment: ${{ build.needs.set-environment.outputs.current_env }} #this job will now retrieve secret values stored in either 'dev' or 'prod' repo environments, depending on the value set in previous job
+    environment: ${{ steps.set_env.outputs.current_env }} #this job will now retrieve secret values stored in either 'dev' or 'prod' repo environments, depending on the value set in previous job
     steps:
       - name: Download Artifact from build job
         uses: actions/download-artifact@v2
@@ -66,4 +66,4 @@ jobs: #collection of jobs
           app-name:  springboot-app-testing-prod
           publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
           package: '*.jar'
-      - run: echo "Deploying to ${{ build.needs.set-environment.outputs.current_env }} environment" #output: "Deploying to {environment name}"
+      - run: echo "Deploying to ${{ steps.set_env.outputs.current_env }} environment" #output: "Deploying to {environment name}"
