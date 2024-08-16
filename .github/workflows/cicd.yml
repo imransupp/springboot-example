@@ -2,6 +2,10 @@ name: Deploy App to Azure App Services
 
 on:
   push:
+    paths-ignore:
+      - 'README.md'
+      - 'backup/**'
+      - '**/*.draft.md'
     branches:
       - main
       - dev
