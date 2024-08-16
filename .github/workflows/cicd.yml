@@ -3,7 +3,20 @@ name: Deploy App to Azure App Services
 on:
   push:
     branches:
-      - master
+      - main
+      - 'feature/**'
+      - 'bug/**'
+      - 'release/**
+    paths-ignore:
+      - '**.md'
+  pull_request:
+    branches:
+      - main
+      - 'feature/**'
+      - 'bug/**'
+      - 'release/**
+    paths-ignore:
+      - '**.md'
 
 jobs:
   build:
