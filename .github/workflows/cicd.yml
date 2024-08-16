@@ -15,7 +15,7 @@ on:
       - feature/**
       - bug/**
       - release/**
-  jobs: #collection of jobs
+jobs: #collection of jobs
   set-environment: #this is a job named 'set-environment'
     runs-on: ubuntu-latest #your preferred OS
     outputs: #the env value needs to be exposed as an output in order to be reached from other jobs
