@@ -31,8 +31,8 @@ jobs: #collection of jobs
           echo "ENVIRONMENT_NAME=DEV" >> $GITHUB_ENV #retrieve secrets from 'dev' environment in Github
       - name: Set output
         id: set_env
-        run: echo "::set-output name=current_env::${{ env.ENVIRONMENT_NAME }}" #assign the value of ENVIRONMENT_NAME to the output variable 'current_env'       
-
+        run: echo "current_env=${{ env.ENVIRONMENT_NAME }}" >> $GITHUB_OUTPUT #assign the value of ENVIRONMENT_NAME to the output variable 'current_env'       
+  
   build: #this is a job named 'build-and-deploy':
     runs-on: ubuntu-latest
     needs: set-environment #this job won't be executed until the set-environment job is finished
@@ -52,6 +52,7 @@ jobs: #collection of jobs
         with:
           name: springboot-example
           path: ${{ github.workspace }}/target/*.jar
+  
   deploy:
       runs-on: ubuntu-latest
       needs: build #this job won't be executed until the build job is finished
