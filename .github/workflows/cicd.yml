@@ -68,3 +68,4 @@ jobs: #collection of jobs
             app-name:  ${{ secrets.APP_NAME }}
             publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
             package: '*.jar'
+        - run: echo "Deploying to ${{ needs.set-environment.outputs.current_env }} environment" #output: "Deploying to {environment name}"
