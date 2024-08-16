@@ -32,7 +32,7 @@ jobs: #collection of jobs
       - name: Set output
         id: set_env
         run: echo "::set-output name=current_env::${{ env.ENVIRONMENT_NAME }}" #assign the value of ENVIRONMENT_NAME to the output variable 'current_env'       
-jobs:
+
   build:
     runs-on: ubuntu-latest
     steps:
