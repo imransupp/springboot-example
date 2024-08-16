@@ -14,6 +14,8 @@ on:
       - feature/**
       - bug/**
       - release/**
+
+      
 jobs:
   build:
     runs-on: ubuntu-latest
