@@ -11,10 +11,27 @@ on:
   pull_request:
     branches:
       - master
+      - dev
       - feature/**
       - bug/**
       - release/**
-        
+  jobs: #collection of jobs
+  set-environment: #this is a job named 'set-environment'
+    runs-on: ubuntu-latest #your preferred OS
+    outputs: #the env value needs to be exposed as an output in order to be reached from other jobs
+      current_env: ${{ steps.set_env.outputs.current_env }} #output variable to store the relevant environment
+    steps:
+      - name: Check if prod
+        if: endsWith(github.ref, '/master') #if the triggering branch is 'main'
+        run: |
+          echo "ENVIRONMENT_NAME=PROD" >> $GITHUB_ENV #retrieve secrets from 'prod' environment in Github
+      - name: Check if dev
+        if: endsWith(github.ref, '/dev') #if the triggering branch is 'dev'
+        run: |
+          echo "ENVIRONMENT_NAME=DEV" >> $GITHUB_ENV #retrieve secrets from 'dev' environment in Github
+      - name: Set output
+        id: set_env
+        run: echo "::set-output name=current_env::${{ env.ENVIRONMENT_NAME }}" #assign the value of ENVIRONMENT_NAME to the output variable 'current_env'       
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -33,11 +50,10 @@ jobs:
         with:
           name: springboot-example
           path: ${{ github.workspace }}/target/*.jar
-  deploy-dev:
+  deploy:
     runs-on: ubuntu-latest
     needs: build
-    environment:
-      name: 'DEV'
+    environment: set-environment #this job won't be executed until the set-environment job is finished
     steps:
       - name: Download Artifact from build job
         uses: actions/download-artifact@v2
@@ -49,20 +65,6 @@ jobs:
           app-name: springboot-app-testing
           publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
           package: '*.jar'
+      - run: echo "Deploying to ${{ needs.set-environment.outputs.current_env }} environment" #output: "Deploying to {environment name}"
 
-  deploy-prod:
-    runs-on: ubuntu-latest
-    needs: deploy-dev
-    environment:
-      name: 'PROD'
-    steps:
-      - name: Download Artifact from build job
-        uses: actions/download-artifact@v2
-        with:
-          name: springboot-example
-      - name: Deploy to Azure App Service
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: springboot-app-testing
-          publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
-          package: '*.jar'
+ 
