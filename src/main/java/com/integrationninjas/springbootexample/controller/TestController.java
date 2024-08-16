@@ -13,7 +13,7 @@ public class TestController {
 	public Object hello() {
 		Map<String, String> object = new HashMap<>();
 		object.put("name", "Integration Test");
-		object.put("email1", "imransupp@gmail");
+		object.put("email1", "imransupp1@gmail");
 		return object;
 	}
 
