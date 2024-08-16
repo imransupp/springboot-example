@@ -52,7 +52,7 @@ jobs: #collection of jobs
           path: ${{ github.workspace }}/target/*.jar
   deploy:
     runs-on: ubuntu-latest
-    needs: build
+    needs: set-environment
     environment: set-environment #this job won't be executed until the set-environment job is finished
     steps:
       - name: Download Artifact from build job
