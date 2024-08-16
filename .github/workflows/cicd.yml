@@ -32,7 +32,7 @@ jobs: #collection of jobs
         id: set_env
         run: echo "current_env=${{ env.ENVIRONMENT_NAME }}" >> $GITHUB_OUTPUT #assign the value of ENVIRONMENT_NAME to the output variable 'current_env'       
   
-  build: #this is a job named 'build-and-deploy':
+  build-and-deploy: #this is a job named 'build-and-deploy':
     runs-on: ubuntu-latest
     needs: set-environment #this job won't be executed until the set-environment job is finished
     environment: ${{ needs.set-environment.outputs.current_env }} #this job will now retrieve secret values stored in either 'dev' or 'prod' repo environments, depending on the value set in previous job
@@ -51,11 +51,6 @@ jobs: #collection of jobs
         with:
           name: springboot-example
           path: ${{ github.workspace }}/target/*.jar
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build #this job won't be executed until the set-environment job is finished
-    #environment: ${{ steps.set_env.outputs.current_env }} #this job will now retrieve secret values stored in either 'dev' or 'prod' repo environments, depending on the value set in previous job
-    steps:
       - name: Download Artifact from build job
         uses: actions/download-artifact@v2
         with:
