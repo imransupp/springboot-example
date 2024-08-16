@@ -62,6 +62,3 @@ jobs: #collection of jobs
           app-name: ${{ secrets.APP_NAME }}
           publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
           package: '*.jar'
-  
-
- 
