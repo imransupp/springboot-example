@@ -5,18 +5,15 @@ on:
     branches:
       - main
       - dev
-      - 'feature/**'
-      - 'bug/**'
-      - 'release/**
+      - feature/**
+      - bug/**
+      - release/**
   pull_request:
     branches:
       - main
-      - 'feature/**'
-      - 'bug/**'
-      - 'release/**
-    paths-ignore:
-      - '**.md'
-
+      - feature/**
+      - bug/**
+      - release/**
 jobs:
   build:
     runs-on: ubuntu-latest
