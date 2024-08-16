@@ -33,8 +33,10 @@ jobs: #collection of jobs
         id: set_env
         run: echo "::set-output name=current_env::${{ env.ENVIRONMENT_NAME }}" #assign the value of ENVIRONMENT_NAME to the output variable 'current_env'       
 
-  build:
+  build and deploy:
     runs-on: ubuntu-latest
+    needs: set-environment
+    environment: set-environment #this job won't be executed until the set-environment job is finished
     steps:
       - name: Checkout Source
         uses: actions/checkout@v3
@@ -50,11 +52,6 @@ jobs: #collection of jobs
         with:
           name: springboot-example
           path: ${{ github.workspace }}/target/*.jar
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    environment: set-environment #this job won't be executed until the set-environment job is finished
-    steps:
       - name: Download Artifact from build job
         uses: actions/download-artifact@v2
         with:
@@ -65,6 +62,6 @@ jobs: #collection of jobs
           app-name: ${{ secrets.APP_NAME }}
           publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
           package: '*.jar'
-      - run: echo "Deploying to ${{ needs.set-environment.outputs.current_env }} environment" #output: "Deploying to {environment name}"
+  
 
  
