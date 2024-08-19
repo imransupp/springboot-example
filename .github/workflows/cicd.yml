@@ -7,61 +7,29 @@ on:
       - dev
       - feature/**
       - bug/**
-  pull_request:
-    branches:
-      - master
-      - feature/**
-      - bug/**
-      - release/**
-      
+permissions:
+  # This is required for requesting the OIDC token
+  id-token: write
+  # This is required for actions/checkout
+  contents: read
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Source
-        uses: actions/checkout@v3
-      - name: Setup Java
-        uses: actions/setup-java@v3
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v4
+        env:
+          # JFrog platform url (for example: https://acme.jfrog.io)
+          JF_URL: ${{ vars.JF_URL }}
         with:
-          distribution: 'temurin'
-          java-version: '17'
-      - name: Build Project
-        run: mvn clean install -DskipTests
-      - name: Upload Artifacct for deployment job
-        uses: actions/upload-artifact@v2
-        with:
-          name: springboot-example
-          path: ${{ github.workspace }}/target/*.jar
-  deploy-dev:
-    runs-on: ubuntu-latest
-    needs: build
-    environment:
-      name: 'DEV'
-    steps:
-      - name: Download Artifact from build job
-        uses: actions/download-artifact@v2
-        with:
-          name: springboot-example
-      - name: Deploy to Azure App Service
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: springboot-app-testing-dev
-          publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE_DEV }}
-          package: '*.jar'
+          # Name of the OIDC provider as specified on the OIDC integration page in the JFrog Platform
+          oidc-provider-name: setup-jfrog-cli
 
-  deploy-prod:
-    runs-on: ubuntu-latest
-    needs: build
-    environment:
-      name: 'PROD'
-    steps:
-      - name: Download Artifact from build job
-        uses: actions/download-artifact@v2
-        with:
-          name: springboot-example
-      - name: Deploy to Azure App Service
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: springboot-app-testing-prod
-          publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE_PROD }}
-          package: '*.jar'
+      - name: Run JFrog CLI
+        run: |
+          # Ping the server
+          jf rt ping
+          # Collect environment variables for the build
+          jf rt bce
