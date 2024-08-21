@@ -61,8 +61,7 @@ jobs: #collection of jobs
           uses: actions/download-artifact@v2
           with:
             name: springboot-example
-	    
-	- name: 'Log into Azure using github secret AZURE_CREDENTIALS'
+        - name: 'Log into Azure using github secret AZURE_CREDENTIALS'
           uses: Azure/login@v1
           with:
             creds: ${{ secrets.AZURE_CREDENTIALS }}
@@ -72,8 +71,7 @@ jobs: #collection of jobs
           run: |
            az account show
            az group list
-
-			
+           
         - name: Deploy to Azure App Service
           uses: azure/webapps-deploy@v2
           with:
