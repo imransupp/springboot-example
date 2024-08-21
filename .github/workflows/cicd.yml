@@ -51,10 +51,10 @@ jobs: #collection of jobs
         with:
           name: springboot-example
           path: ${{ github.workspace }}/target/*.jar
-              - name: Download Artifact from build job
-          uses: actions/download-artifact@v2
-          with:
-            name: springboot-example
+      - name: Download Artifact from build job
+        uses: actions/download-artifact@v2
+        with:
+          name: springboot-example
       - name: 'Log into Azure using github secret AZURE_CREDENTIALS'
         uses: Azure/login@v1
         with:
