@@ -51,31 +51,26 @@ jobs: #collection of jobs
         with:
           name: springboot-example
           path: ${{ github.workspace }}/target/*.jar
-  
-  deploy:
-      runs-on: ubuntu-latest
-      needs: build #this job won't be executed until the build job is finished
-      environment: ${{ needs.set-environment.outputs.current_env }} #this job will now retrieve secret values stored in either 'dev' or 'prod' repo environments, depending on the value set in previous job
-      steps:
-        - name: Download Artifact from build job
+              - name: Download Artifact from build job
           uses: actions/download-artifact@v2
           with:
             name: springboot-example
-        - name: 'Log into Azure using github secret AZURE_CREDENTIALS'
-          uses: Azure/login@v1
-          with:
-            creds: ${{ secrets.AZURE_CREDENTIALS }}
-            enable-AzPSSession: true
+      - name: 'Log into Azure using github secret AZURE_CREDENTIALS'
+        uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          enable-AzPSSession: true
 
-        - name: 'Run az commands'
-          run: |
-           az account show
-           az group list
+      - name: 'Run az commands'
+        run: |
+          az account show
+          az group list
            
-        - name: Deploy to Azure App Service
-          uses: azure/webapps-deploy@v2
+      - name: Deploy to Azure App Service
+        uses: azure/webapps-deploy@v2
           with:
             app-name:  ${{ secrets.APP_NAME }}
             publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
             package: '*.jar'
-        - run: echo "Deploying to ${{ needs.set-environment.outputs.current_env }} environment" #output: "Deploying to {environment name}"
+
+      - run: echo "Deploying to ${{ needs.set-environment.outputs.current_env }} environment" #output: "Deploying to {environment name}"
