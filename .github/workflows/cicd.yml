@@ -23,13 +23,7 @@ jobs: #collection of jobs
   az-login-test:
     runs-on: ubuntu-latest
     steps:
-      - name: 'Az CLI login with subscription'
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-          
-      - run: |
-          az account show --output none 
+
       - name: 'Az CLI login without subscription OIDC'
         uses: azure/login@v1
         with:
