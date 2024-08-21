@@ -62,7 +62,7 @@ jobs: #collection of jobs
           with:
             name: springboot-example
 			
-		- name: 'Log into Azure using github secret AZURE_CREDENTIALS'
+	- name: 'Log into Azure using github secret AZURE_CREDENTIALS'
           uses: Azure/login@v1
           with:
             creds: ${{ secrets.AZURE_CREDENTIALS }}
