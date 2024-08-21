@@ -14,7 +14,7 @@ public class TestController {
 		Map<String, String> object = new HashMap<>();
 		object.put("name", "Integration Test");
 
-		object.put("email", "imransupp1@gmail.com");
+		object.put("email", "imransupp12@gmail.com");
 
 
 
