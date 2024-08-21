@@ -71,7 +71,7 @@ jobs: #collection of jobs
         - name: Deploy to Azure App Service
           uses: azure/webapps-deploy@v2
           with:
-            app-name:  ${{ secrets.APP_NAME }}
-            publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
+            app-name:  AZUREWEBAPPPUBLISHPROFILE_PROD
+            publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE_PROD }}
             package: '*.jar'
         - run: echo "Deploying to ${{ needs.set-environment.outputs.current_env }} environment" #output: "Deploying to {environment name}"
