@@ -61,7 +61,7 @@ jobs: #collection of jobs
           uses: actions/download-artifact@v2
           with:
             name: springboot-example
-			
+	    
 	- name: 'Log into Azure using github secret AZURE_CREDENTIALS'
           uses: Azure/login@v1
           with:
