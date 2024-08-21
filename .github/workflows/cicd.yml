@@ -7,7 +7,7 @@ on:
       - feature/**
       - bug/**
       - release/**
-pull_request:
+  pull_request:
     branches:
       - master
       - dev
