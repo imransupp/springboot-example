@@ -20,22 +20,10 @@ permissions:
   id-token: write      
 jobs: #collection of jobs
 
-  az-login-test:
-    runs-on: ubuntu-latest
-    steps:
 
-      - name: 'Az CLI login without subscription OIDC'
-        uses: azure/login@v1
-        with:
-          client-id: ${{ secrets.AZURE_CLIENTID }}
-          tenant-id: ${{ secrets.AZURE_TENANTID }}
-          allow-no-subscriptions: true
-          
-      - run: |
-          az account show --output none
   set-environment: #this is a job named 'set-environment'
     runs-on: ubuntu-latest #your preferred OS
-    needs: [az-login-test]
+
     outputs: #the env value needs to be exposed as an output in order to be reached from other jobs
       current_env: ${{ steps.set_env.outputs.current_env }} #output variable to store the relevant environment
     steps:
